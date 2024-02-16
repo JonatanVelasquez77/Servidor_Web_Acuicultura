@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servidor Acuicultura</title>
+  <link rel="stylesheet" href="estilo.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+	<div class="top-section">
+		<h1>SISTEMA ACUICOLA</h1>
+		<hr>
+		<h3>ACTIVACION DIGITAL</h3>
+		<button onclick="turnOn()">&nbsp;On&nbsp;</button>
+		<button onclick="turnOff()">&nbsp;Off&nbsp;</button>
+		
+		<!-- <button id="downloadButton">Descargar CSV</button> -->
+		
+	</div>
+	
+	<div id="margin_p1">
+		<p id="parrafo1">Sensores Externos</p>
+	</div>
+	<div class="container">
+			
+		<canvas id="myChart1" width="400" height="200"></canvas>
+		<button id="downloadButton1">Descargar CSV Luz</button>
+		<div class="card" id="Luz" data-value="94">
+			<div class="box">
+				<div class="percent">
+					<svg>
+						<circle cx="70" cy="70" r="70"></circle>
+						<circle cx="70" cy="70" r="70"></circle>
+					</svg>
+					<div class="number">
+						<h2>90 <span>lx</span> </h2>
+					</div>
+				</div>
+				<h2 class="text">Luz</h2>
+			</div>	
+		</div>
+		<canvas id="myChart2" width="400" height="200"></canvas>
+		<button id="downloadButton2">Descargar CSV Temperatura</button>
+		<div class="card" id="Temperatura" data-value="15">
+			<div class="box">
+				<div class="percent">
+					<svg>
+						<circle cx="70" cy="70" r="70"></circle>
+						<circle cx="70" cy="70" r="70"></circle>
+					</svg>
+					<div class="number">
+						<h2>15<span> *C</span></h2>
+					</div>
+				</div>
+				<h2 class="text">Temperatura</h2>
+			</div>
+		</div>
+		<canvas id="myChart3" width="400" height="200"></canvas>
+		<button id="downloadButton3">Descargar CSV Humedad</button>
+		<div class="card" id="Humedad" data-value="50">
+			<div class="box">
+				<div class="percent">
+					<svg>
+						<circle cx="70" cy="70" r="70"></circle>
+						<circle cx="70" cy="70" r="70"></circle>
+					</svg>
+					<div class="number">
+						<h2>50<span>%</span> </h2>
+					</div>
+				</div>
+				<h2 class="text">Humedad</h2>
+			</div>
+		</div>
+	</div>
+	<div class="container2">
+		
+		<canvas id="myChart4" width="400" height="200"></canvas>
+		<button id="downloadButton4">Descargar CSV Presion</button>
+		<div class="card" id="Presion" data-value="500">
+			<div class="box">
+				<div class="percent">
+					<svg>
+						<circle cx="70" cy="70" r="70"></circle>
+						<circle cx="70" cy="70" r="70"></circle>
+					</svg>
+					<div class="number">
+						<h2>500<span>hPa</span> </h2>
+					</div>
+				</div>
+			    <h2 class="text">Presion</h2>
+			</div>
+	    </div>
+		<canvas id="myChart5" width="400" height="200"></canvas>
+		<button id="downloadButton5">Descargar CSV Altitud</button>
+		<div class="card" id="Altitud" data-value="2">
+			<div class="box">
+				<div class="percent">
+					<svg>
+						<circle cx="70" cy="70" r="70"></circle>
+						<circle cx="70" cy="70" r="70"></circle>
+					</svg>
+					<div class="number">
+						<h2>2 <span>m</span> </h2>
+					</div>
+				</div>
+				<h2 class="text">Altitud</h2>
+			</div>
+	    </div>
+	</div>
+
+	<!-- <div id="margin_p2">
+		<p id="parrafo2">Sensores Internos</p>
+	</div> -->
+
+	<div class="container3">
+			
+		<canvas id="myChart6" width="400" height="200"></canvas>
+		<button id="downloadButton6">Descargar CSV pH</button>
+		<div class="card" id="pH" data-value="7">
+			<div class="box">
+				<div class="percent">
+					<svg>
+						<circle cx="70" cy="70" r="70"></circle>
+						<circle cx="70" cy="70" r="70"></circle>
+					</svg>
+					<div class="number">
+						<h2>7 <span>pH</span> </h2>
+					</div>
+				</div>
+				<h2 class="text">pH</h2>
+			</div>	
+		</div>
+		<canvas id="myChart7" width="400" height="200"></canvas>
+		<button id="downloadButton7">Descargar CSV Temperatura Interna</button>
+		<div class="card" id="TemperaturaInterna" data-value="10">
+			<div class="box">
+				<div class="percent">
+					<svg>
+						<circle cx="70" cy="70" r="70"></circle>
+						<circle cx="70" cy="70" r="70"></circle>
+					</svg>
+					<div class="number">
+						<h2>15<span> *C</span></h2>
+					</div>
+				</div>
+				<h2 class="text">Temperatura Int</h2>
+			</div>
+		</div>
+		<canvas id="myChart8" width="400" height="200"></canvas>
+		<button id="downloadButton8">Descargar CSV Oxigeno</button>
+		<div class="card" id="Oxigeno" data-value="50">
+			<div class="box">
+				<div class="percent">
+					<svg>
+						<circle cx="70" cy="70" r="70"></circle>
+						<circle cx="70" cy="70" r="70"></circle>
+					</svg>
+					<div class="number">
+						<h2>50<span>%</span> </h2>
+					</div>
+				</div>
+				<h2 class="text">Oxigeno</h2>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
+

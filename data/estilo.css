@@ -1,0 +1,464 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@800&display=swap');
+*/
+/* Estilos globales para todos los elementos */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box; /* Hace que el modelo de caja incluya el padding y el borde en el ancho y alto totales del elemento */
+	font-family: sans-serif;
+  }
+  
+  /* Estilos específicos para la etiqueta HTML */
+  html {
+	width: 100%;
+  }
+
+  /* Estilos para el cuerpo (body) de la página */
+  body {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	/* background: #fcfcfc; */
+	margin: 0 auto;
+	background-image: url('Fondo.jpg'); /* Reemplaza 'ruta_de_la_imagen.jpg' con la ruta de tu imagen */
+	background-size: cover; /* Ajusta según sea necesario */
+	background-repeat: no-repeat;
+	background-attachment: fixed; /* Fija la imagen en su posición, de modo que no se desplace con el contenido */
+  }
+  
+  /* Estilos para la sección superior 'top-section' */
+  .top-section {
+	text-align: center;
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 2; /* Asegura que la parte superior esté sobre el contenedor */
+  }
+  
+  .top-section h1 {
+	margin-bottom: 10px; /* Ajusta este valor según el espacio deseado */
+  }
+  
+  .top-section h3 {
+	margin-top: 10px; /* Ajusta este valor según el espacio deseado */
+  }
+  
+  .top-section button {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 20px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+  }
+  
+  #margin_p1{
+    margin-top: -550px; /* Cambia el valor de margen según sea necesario */
+  }
+
+  #margin_p1{
+    border: 3px solid rgb(190, 190, 190);
+    margin-left: auto;
+    width: 100%;
+    padding: 10px;
+    border-style: outset;
+    box-shadow: 10px 10px rgb(12, 12, 12);
+  }
+
+  #parrafo1{
+	margin-left: inherit;
+	text-align: center;
+	font-family: "Lucida Console", "Courier New", monospace;
+	font-size: 20px;
+	text-shadow: 1px 1px;
+  }
+  #margin_p2{
+    margin-top: 100px; /* Cambia el valor de margen según sea necesario */
+  }
+
+  #margin_p2 {
+    border: 3px solid rgb(190, 190, 190);
+    margin-left: auto;
+    width: 100%;
+    padding: 10px;
+    border-style: outset;
+    box-shadow: 10px 10px rgb(12, 12, 12);
+  }
+  #parrafo2{
+	margin-left: inherit;
+	text-align: center;
+	font-family: "Lucida Console", "Courier New", monospace;
+	font-size: 20px;
+	text-shadow: 1px 1px;
+  }
+  /* Estilos para el elemento con ID 'myChart' */
+  #myChart1 {
+	position: absolute;
+	top: 300px;
+	left: 5%;
+	transform: translateX(0%);
+	transform: translateY(-10%);
+  }
+
+  #myChart2 {
+	position: absolute;
+	top: 300px;
+	left: 38%;
+	transform: translateX(0%);
+	transform: translateY(-10%);
+  }
+  #myChart3 {
+	position: absolute;
+	top: 300px;
+	left: 71%;
+	transform: translateX(0%);
+	transform: translateY(-10%);
+  }
+  #myChart4 {
+	position: absolute;
+	top: 300px;
+	left: 10%;
+	transform: translateX(0%);
+	transform: translateY(-10%);
+  }
+  #myChart5 {
+	position: absolute;
+	top: 300px;
+	left: 60%;
+	transform: translateX(0%);
+	transform: translateY(-10%);
+  }
+  #myChart6 {
+	position: absolute;
+	top: 300px;
+	left: 5%;
+	transform: translateX(0%);
+	transform: translateY(-10%);
+  }
+  #myChart7 {
+	position: absolute;
+	top: 300px;
+	left: 38%;
+	transform: translateX(0%);
+	transform: translateY(-10%);
+  }
+  #myChart8 {
+	position: absolute;
+	top: 300px;
+	left: 71%;
+	transform: translateX(0%);
+	transform: translateY(-10%);
+  }
+
+  /* Estilos para el contenedor principal 'container' */
+  .container {
+	position: absolute;
+	width: 1900px;
+	top: 250px;
+	display: flex;
+	justify-content: space-around;
+  }
+  #downloadButton1 {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+	position: absolute;
+	top: 530px;
+	left: 13%;
+  }
+
+  #downloadButton2 {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+	position: absolute;
+	top: 530px;
+	left: 45%;
+  }
+
+  #downloadButton3 {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+	position: absolute;
+	top: 530px;
+	left: 80%;
+  }
+  
+  #downloadButton4 {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+	position: absolute;
+	top: 530px;
+	left: 20%;
+  }
+
+  #downloadButton5 {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+	position: absolute;
+	top: 530px;
+	left: 70%;
+  }
+  /* Estilos para las tarjetas 'card' dentro del contenedor */
+  .container .card {
+	position: relative;
+	width: 250px;
+	background: linear-gradient(0deg, #1b1b1b, #222, #1b1b1b);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 250px;
+	border-radius: 4px;
+	text-align: center;
+	overflow: hidden;
+	transition: 0.5s;
+  }
+  
+  /* Estilos cuando se pasa el ratón sobre las tarjetas */
+  .container .card:hover {
+	transform: translateY(-10px);
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Pseudo-elemento ::before para las tarjetas */
+  .container .card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -50%;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.03);
+	pointer-events: none;
+	z-index: 1;
+  }
+  /* Container 2 */
+  .container2 {
+	position: absolute;
+	width: 1900px;
+	top: 900px;
+	display: flex;
+	justify-content: space-around;
+  }
+  .container2 .card {
+	position: relative;
+	width: 250px;
+	background: linear-gradient(0deg, #1b1b1b, #222, #1b1b1b);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 250px;
+	border-radius: 4px;
+	text-align: center;
+	overflow: hidden;
+	transition: 0.5s;
+  }
+  .container2 .card:hover {
+	transform: translateY(-10px);
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Pseudo-elemento ::before para las tarjetas */
+  .container2 .card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -50%;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.03);
+	pointer-events: none;
+	z-index: 1;
+  }
+
+  .container3 {
+	position: absolute;
+	width: 1900px;
+	top: 1600px;
+	display: flex;
+	justify-content: space-around;
+  }
+  .container3 .card {
+	position: relative;
+	width: 250px;
+	background: linear-gradient(0deg, #1b1b1b, #222, #1b1b1b);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 250px;
+	border-radius: 4px;
+	text-align: center;
+	overflow: hidden;
+	transition: 0.5s;
+  }
+  .container3 .card:hover {
+	transform: translateY(-10px);
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Pseudo-elemento ::before para las tarjetas */
+  .container3 .card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -50%;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.03);
+	pointer-events: none;
+	z-index: 1;
+  }
+  #descargarCSVpH {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+	position: absolute;
+	top: 530px;
+	left: 13%;
+  }
+
+  #descargarCSVTemperaturaInterna {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+	position: absolute;
+	top: 530px;
+	left: 45%;
+  }
+
+  #descargarCSVOxigeno {
+	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
+	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
+	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
+	position: absolute;
+	top: 530px;
+	left: 80%;
+  }
+  
+  
+  /* Estilos para el círculo de porcentaje 'percent' */
+  .percent {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	box-shadow: inset 0 0 50px #000;
+	background: #222;
+	z-index: 1000;
+  }
+  
+  /* Estilos para el número dentro del círculo 'number' */
+  .percent .number {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+  }
+  
+  .percent .number h2 {
+	color: #777;
+	font-weight: 700;
+	font-size: 40px;
+	transition: 0.5s;
+  }
+  
+  /* Estilos cuando se pasa el ratón sobre las tarjetas para el número */
+  .card:hover .percent .number h2 {
+	color: #fff;
+	font-size: 60px;
+  }
+  
+  .percent .number h2 span {
+	font-size: 24px;
+	color: #777;
+  }
+  
+  /* Estilos cuando se pasa el ratón sobre las tarjetas para el span dentro del número */
+  .card:hover .percent .number h2 span {
+	color: #777;
+	transition: 0.5s;
+  }
+  
+  /* Estilos para el texto 'text' dentro de la tarjeta */
+  .text {
+	position: relative;
+	color: #777;
+	margin-top: 20px;
+	font-weight: 700;
+	font-size: 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: 0.5s;
+  }
+  
+  /* Estilos cuando se pasa el ratón sobre las tarjetas para el texto */
+  .card:hover .text {
+	color: #fff;
+  }
+
+  
+  /* Estilos para el elemento SVG */
+  svg {
+	position: relative;
+	width: 150px;
+	height: 150px;
+	z-index: 1000;
+  }
+  
+  /* Estilos para el círculo dentro del SVG */
+  svg circle {
+	width: 100%;
+	height: 100%;
+	fill: none;
+	stroke: #191919;
+	stroke-width: 10;
+	stroke-linecap: round;
+	transform: translate(5px, 5px);
+  }
+  
+  /* Estilos para el segundo círculo dentro del SVG */
+  svg circle:nth-child(2) {
+	stroke-dasharray: 440;
+	stroke-dashoffset: 440;
+  }
+  
+  /* Estilos específicos para la primera tarjeta y su porcentaje */
+  .card:nth-child(1) svg circle:nth-child(2) {
+	stroke-dashoffset: calc(440px - (440px * 90) / 100);
+	stroke: #00ff43;
+  }
+  
+  /* Estilos específicos para la segunda tarjeta y su porcentaje */
+  .card:nth-child(2) svg circle:nth-child(2) {
+	stroke-dashoffset: calc(440px - (440px * 85) / 100);
+	stroke: #00a1ff;
+  }
+  
+  /* Estilos específicos para la tercera tarjeta y su porcentaje */
+  .card:nth-child(3) svg circle:nth-child(2) {
+	stroke-dashoffset: calc(440px - (440px * 60) / 100);
+	stroke: #ff04f7;
+  }
+  
+  /* Estilos para pantallas con un ancho máximo de 991px */
+  @media (max-width: 991px) {
+	.container {
+	  width: 100%;
+	  flex-direction: column;
+	}
+  
+	.container .card {
+	  margin: 20px auto;
+	  width: 80%; /* Modifica según sea necesario para el ancho deseado */
+	}
+  }
+  
