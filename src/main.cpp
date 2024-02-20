@@ -1,27 +1,34 @@
-//LIBRERIAS
-#include <Arduino.h>
-#include <WiFi.h>
-#include <AsyncEventSource.h>
-#include <SPIFFS.h>
-#include <WebSocketsServer.h>
-#include <Wire.h>
-#include <BH1750.h>
-#include "ClosedCube_HDC1080.h"
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BMP280.h>
-#include <Adafruit_SSD1306.h> // Biblioteca para el controlador de pantalla OLEDz
-#include <Adafruit_GFX.h>    // Biblioteca de gráficos básica
+// ********************************************************************* LIBRERIAS *********************************************************************
 
+#include <Arduino.h> // Libreria para la adecuacion con Arduino
+#include <WiFi.h> // Libreria para la conexion Wifi
+#include <AsyncEventSource.h> // Libreria para los eventos del servidor
+#include <SPIFFS.h> // Libreria para la carga de archivos con SPIFFS
+#include <WebSocketsServer.h> // Libreria para la comunicacion con websockets en el servidor 
+#include <Wire.h> // Libreria para comunicacion I2C
+#include <BH1750.h> // libreria sensor BH1750
+#include "ClosedCube_HDC1080.h" // Libreria sensor HDC1080
+#include <Adafruit_Sensor.h>  // Libreria para lectura de sensores
+#include <Adafruit_BMP280.h>  // Libreria sensor BMP280
+#include <Adafruit_SSD1306.h> // Libreria para el controlador de pantalla OLEDz
+#include <Adafruit_GFX.h>    // Libreria de gráficos básica
+
+//*****************************************************************************************************************************************************
+
+// ************************************************************** INICIALIZACION DE VARIABLES *********************************************************
+
+// ****** Sensores I2C ******
 // I2C = PIN 21 : DATA: SDA
 // I2C = PIN 22 : CLOCK: SCL 
-Adafruit_BMP280 bmp;		// crea objeto con nombre bmp
-BH1750 lightSensor(0x23);
-ClosedCube_HDC1080 hdc1080;
+Adafruit_BMP280 bmp;		// Crea objeto con nombre bmp para el sensor BM280
+BH1750 lightSensor(0x23); // Crea objeto con nombre lightSensor para el sensor BH1750
+ClosedCube_HDC1080 hdc1080; // Crea objeto con nombre hdc1080 para el sensor HDC1080
 
-float temperaturaBMP;		// variable para almacenar valor de temperatura con sensor BMP
-float presion, P0, altitud;		// variables para almacenar valor de presion atmosferica	/ y presion actual como referencia para altitud
-float lux;  // variable para almacenar valor de la luz
-float temperaturaHDC, humedad;  // variable para almacenar valor de temperatura y humedad con sensor HDC
+// ****** Variables de sensores ******
+float temperaturaBMP;		// Variable para almacenar valor de temperatura con sensor BMP
+float presion, P0, altitud;		// Variables para almacenar valor de presion atmosferica	/ y presion actual como referencia para altitud
+float lux;  // Variable para almacenar valor de la luz
+float temperaturaHDC, humedad;  // Variable para almacenar valor de temperatura y humedad con sensor HDC
 
 // Variables para sensor de pH
 // const int analogInPin = 27; 
@@ -29,15 +36,16 @@ float temperaturaHDC, humedad;  // variable para almacenar valor de temperatura 
 // int temp=0;
 // unsigned long int inValue; 
 
-const uint8_t ledPin = 2;
-const uint16_t dataTxTimeInterval = 500;
+const uint8_t ledPin = 2; // Led de la tarjeta esp32
+const uint16_t dataTxTimeInterval = 500; // Variable para la funcion millis()
 
-const char *ssid = "TPLINK_ESP32";
-const char *password = "esp32-7777";
+// ****** Variables de la pantalla OLED ******
+const uint8_t ancho = 128;     // Ancho de la pantalla OLED
+const uint8_t alto = 64;       // Altura de la pantalla OLED
+#define OLED_RESET 4           // Pin de reset para la pantalla OLED (no utilizado en este caso)
+Adafruit_SSD1306 oled = Adafruit_SSD1306(ancho, alto, &Wire, OLED_RESET); // Inicialización del objeto de la pantalla OLED
 
-AsyncWebServer server(80);
-WebSocketsServer websockets(81);
-
+// ****** Variables para la funcionalidad de los Reles ******
 #define RELAY_ON 0    
 #define RELAY_OFF 1
 
@@ -45,14 +53,6 @@ int rele_1 = 32;  // IN 1
 int rele_2 = 33;  // IN 2 
 int rele_3 = 25;  // IN 3
 int rele_4 = 26;  // IN 4
-
-const uint8_t ancho = 128;     // Ancho de la pantalla OLED
-const uint8_t alto = 64;       // Altura de la pantalla OLED
-#define OLED_RESET 4           // Pin de reset para la pantalla OLED (no utilizado en este caso)
-Adafruit_SSD1306 oled = Adafruit_SSD1306(ancho, alto, &Wire, OLED_RESET); // Inicialización del objeto de la pantalla OLED
-
-uint16_t lecturaAnterior = 0;  // Variable para almacenar la lectura anterior de la LDR
-uint16_t lecturaActual;        // Variable para almacenar la lectura actual de la LDR
 
 // Tiempos de activación y desactivación de cada relé en milisegundos
 const unsigned long tiempoActivacion1 = 10000; // 10 segundos
@@ -67,11 +67,22 @@ const unsigned long tiempoInactividad3 = 55000; // 55 segundos
 const unsigned long tiempoActivacion4 = 40000; // 40 segundos
 const unsigned long tiempoInactividad4 = 20000; // 20 segundos
 
+// ****** Variables para la conexion con el punto de acceso WIFI ******
+const char *ssid = "TPLINK_ESP32"; // Nombre de red Wifi
+const char *password = "esp32-7777"; // Contrasena para acceder a la red
 
+// ****** Incializacion para el servidor ******
+AsyncWebServer server(80); // Crea objeto para servidor web asincrono en puerto 80
+WebSocketsServer websockets(81); // Crea objeto para la comunicacion websocket bidireccional en puerto 81
+
+// ********************************************************************* FUNCIONES *********************************************************************
+
+// ****** Funcion para error de pagina ******
 void notFound(AsyncWebServerRequest *request){
-	request->send(404, "text/plain", "Paagina No Encontrada");
+	request->send(404, "text/plain", "Pagina No Encontrada");
 }
 
+// ****** Funcion para la conexion del servidor ******
 void webSocketEvent(uint8_t num,WStype_t type,uint8_t *payload, size_t length ){
 	switch (type)
 	{
@@ -101,6 +112,7 @@ void webSocketEvent(uint8_t num,WStype_t type,uint8_t *payload, size_t length ){
 	}
 }
 
+// ****** Funcion para mostrar los datos en en pantalla OLED ******
 void mostrarLectura(float sensor1,float sensor2, float sensor3, float sensor4, float sensor5) {
   oled.fillRect(40, 0, 80, 12, SSD1306_BLACK); // Borra el área de la pantalla
   oled.setCursor(40, 0);                         // Establece la posición del cursor
@@ -134,14 +146,17 @@ void mostrarLectura(float sensor1,float sensor2, float sensor3, float sensor4, f
 
   oled.display();                                 // Actualiza la pantalla
 }
+//*****************************************************************************************************************************************************
+
+// ********************************************************************* SETUP  ***********************************************************************
 
 void setup() {
-  Serial.begin(115200);				// inicializa comunicacion serie a 9600 bps
-  Serial.println("Iniciando:");			// texto de inicio
+  Serial.begin(115200);				// Inicializa comunicacion serie a 115200 bps
+  Serial.println("Iniciando:");			// Texto de inicio
 
   
   
-  if ( !bmp.begin() ) {				// si falla la comunicacion con el sensor mostrar
+  if ( !bmp.begin() ) {				// Inicia comunicacion del sensor BMP280 y si falla la comunicacion con el sensor mostrar
     Serial.println("BMP280 no encontrado !");	// texto y detener flujo del programa
     while (1);					// mediante bucle infinito
   }
@@ -149,14 +164,15 @@ void setup() {
 
   lightSensor.begin(BH1750::CONTINUOUS_HIGH_RES_MODE_2); // Inicializa el sensor de luz BH1750 en modo de resolución continua y alta resolución
 	if (!lightSensor.begin()) {  // Verifica si hay un error al inicializar el sensor BH1750
-    Serial.println("Error al inicializar el sensor BH1750");
-    while (1);
+    Serial.println("Error al inicializar el sensor BH1750"); // texto y detener flujo del programa
+    while (1); // bucle infinito
   	}
   
-  hdc1080.begin(0x40);
+  hdc1080.begin(0x40); // Inicia comunicacion con sensor HDC1080
 
-  WiFi.begin(ssid, password);
-	while (WiFi.status() != WL_CONNECTED) {
+  WiFi.begin(ssid, password); // Inicia la comunicacion Wifi
+
+	while (WiFi.status() != WL_CONNECTED) { // Verificacion de conexion
       delay(1000);
       Serial.println("Conectando al Servidor...");
   }
@@ -167,35 +183,36 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   pinMode(ledPin,OUTPUT); // LED APAGADO
+
 	//Definir los pines como salida
-  pinMode (rele_1, OUTPUT);
-  pinMode (rele_2, OUTPUT);
-  pinMode (rele_3, OUTPUT);
-  pinMode (rele_4, OUTPUT);
+  pinMode (rele_1, OUTPUT); // pin rele 1
+  pinMode (rele_2, OUTPUT); // pin rele 2
+  pinMode (rele_3, OUTPUT); // pin rele 3
+  pinMode (rele_4, OUTPUT); // pin rele 4
   
 
-  if (!SPIFFS.begin(true)){
+  if (!SPIFFS.begin(true)){  // Inicia montaje de sistema SPIFFS
     Serial.println("Error al montar SPIFFS");
     return;
   }
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-        {request->send(SPIFFS, "/Pagina.html","text/html");});
+        {request->send(SPIFFS, "/Pagina.html","text/html");}); // Envio para archivo pagina HTML
   
   server.on("/estilo.css", HTTP_GET, [](AsyncWebServerRequest *request){
-          request->send(SPIFFS, "/estilo.css", "text/css");});
+          request->send(SPIFFS, "/estilo.css", "text/css");}); // Envio para archivo CSS
 
   server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request){
-          request->send(SPIFFS, "/script.js", "text/js");});
+          request->send(SPIFFS, "/script.js", "text/js");}); // Envio para archivo Java script
 
   server.on("/Fondo.jpg", HTTP_GET, [](AsyncWebServerRequest *request){
-     			request->send(SPIFFS, "/Fondo.jpg", "text/jpg");});
+     			request->send(SPIFFS, "/Fondo.jpg", "text/jpg");}); // Envio para archivo jpg
 
-  server.onNotFound(notFound);
-  server.begin();
+  server.onNotFound(notFound); // Inicio para la funcion de pagina 
+  server.begin(); // Inicia el servidor
 
-  websockets.begin();
-  websockets.onEvent(webSocketEvent);
+  websockets.begin(); // Inicia websockets
+  websockets.onEvent(webSocketEvent); // Encendido de funcion webSocketEvent
 
   oled.begin(SSD1306_SWITCHCAPVCC, 0x3C); // Inicialización de la pantalla OLED
   delay(1000);
@@ -224,23 +241,25 @@ void setup() {
 
 }						
 
+//*****************************************************************************************************************************************************
+
+// ********************************************************************* LOOP  ***********************************************************************
+
 void loop() {
-  websockets.loop();
-  static uint32_t prevMillis = 0;
-  if(millis() - prevMillis >= dataTxTimeInterval){
-		prevMillis = millis();
+  websockets.loop(); // Bucle para la funcion websocket
+  static uint32_t prevMillis = 0; // Variable para la funcion millis()
+  if(millis() - prevMillis >= dataTxTimeInterval){ // Condicion para realizar las lecturas en tiempo determinado
+		prevMillis = millis(); 
 
 		lux = lightSensor.readLightLevel(); // Lee el nivel de luz actual del sensor BH1750
 
 		temperaturaHDC = hdc1080.readTemperature(); // Lee el nivel de Temperatura actual del sensor hdc1080
   	humedad = hdc1080.readHumidity();	// Lee el nivel de Humedad actual del sensor hdc1080
 
-		temperaturaBMP = bmp.readTemperature();		// almacena en variable el valor de temperatura
-    presion = bmp.readPressure()/100;		// almacena en variable el valor de presion divido // por 100 para covertirlo a hectopascales
+		temperaturaBMP = bmp.readTemperature();		// Almacena en variable el valor de temperatura
+    presion = bmp.readPressure()/100;		// Almacena en variable el valor de presion divido // por 100 para covertirlo a hectopascales
 	
-		altitud = bmp.readAltitude(P0);		// muestra valor de altitud con referencia a P0
-
-    mostrarLectura(lux,temperaturaHDC,humedad,presion,altitud);
+		altitud = bmp.readAltitude(P0);		// Muestra valor de altitud con referencia a P0
 
     // ****************** SENSOR DE pH y Temperatura
   //   /*para evitar demasiadas variaciones lecturaremos 
@@ -270,16 +289,19 @@ void loop() {
 
   //   float PH= -0.0554*PHVol +22.236;
 
+    mostrarLectura(lux,temperaturaHDC,humedad,presion,altitud); // Muestra los datos de los sensores en la pantalla OLED
+
+    // Se recolectan los datos en un String para ser enviados
 		String	data = "{\"Luz\": "+ String(lux) +", \"Temperatura\": "+ String(temperaturaHDC)+", \"Humedad\": "+ String(humedad) +", \"Presion\": "+ String(presion) +", \"Altitud\": "+ String(altitud) +"}";
 		//String	data = "{\"Luz\": "+ String(lux) +", \"Temperatura\": "+ String(temperaturaHDC)+", \"Humedad\": "+ String(humedad) +", \"Presion\": "+ String(presion) +", \"Altitud\": "+ String(altitud) +", \"pH\": "+ String(PH) +"}";
     //String	data = "{\"Luz\": "+ String(lux) +", \"Temperatura\": "+ String(temperatura)+", \"Humedad\": "+ String(humedad) +"}";
 
-		websockets.broadcastTXT(data);
+		websockets.broadcastTXT(data); // Se envian los datos por protocolo websocket
 
-		Serial.println(data);
+		Serial.println(data); // Se imprimen los datos en la terminal
 	}
 
-  unsigned long tiempoActual = millis();
+  unsigned long tiempoActual = millis(); // Variable para funcion millis()
 
   // Control de relé 1
   if (tiempoActual % (tiempoActivacion1 + tiempoInactividad1) < tiempoActivacion1) {
@@ -311,3 +333,4 @@ void loop() {
 
 }
 
+//*****************************************************************************************************************************************************
