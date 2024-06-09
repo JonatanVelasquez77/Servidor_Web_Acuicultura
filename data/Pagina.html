@@ -15,8 +15,16 @@
 		<h1>SISTEMA ACUICOLA</h1>
 		<hr>
 		<h3>ACTIVACION DIGITAL</h3>
-		<button onclick="turnOn()">&nbsp;On&nbsp;</button>
-		<button onclick="turnOff()">&nbsp;Off&nbsp;</button>
+		
+		<button onclick="turnOn()">&nbsp;Rele 1 - On&nbsp;</button>
+		<button onclick="turnOff()">&nbsp;Rele 1 - Off&nbsp;</button>
+		<button onclick="turnOn()">&nbsp;Rele 2 - On&nbsp;</button>
+		<button onclick="turnOff()">&nbsp;Rele 2 - Off&nbsp;</button>
+		<button onclick="turnOn()">&nbsp;Rele 3 - On&nbsp;</button>
+		<button onclick="turnOff()">&nbsp;Rele 3 - Off&nbsp;</button>
+		<button onclick="turnOn()">&nbsp;Rele 4 - On&nbsp;</button>
+		<button onclick="turnOff()">&nbsp;Rele 4 - Off&nbsp;</button>
+		
 		
 		<!-- <button id="downloadButton">Descargar CSV</button> -->
 		
@@ -136,7 +144,7 @@
 		</div>
 		<canvas id="myChart7" width="400" height="200"></canvas>
 		<button id="downloadButton7">Descargar CSV Temperatura Interna</button>
-		<div class="card" id="TemperaturaInterna" data-value="10">
+		<div class="card" id="TempInt" data-value="10">
 			<div class="box">
 				<div class="percent">
 					<svg>
@@ -151,8 +159,8 @@
 			</div>
 		</div>
 		<canvas id="myChart8" width="400" height="200"></canvas>
-		<button id="downloadButton8">Descargar CSV Oxigeno</button>
-		<div class="card" id="Oxigeno" data-value="50">
+		<button id="downloadButton8">Descargar CSV TDS</button>
+		<div class="card" id="tds" data-value="100">
 			<div class="box">
 				<div class="percent">
 					<svg>
@@ -163,7 +171,7 @@
 						<h2>50<span>%</span> </h2>
 					</div>
 				</div>
-				<h2 class="text">Oxigeno</h2>
+				<h2 class="text">TDS</h2>
 			</div>
 		</div>
 	</div>

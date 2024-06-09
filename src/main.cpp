@@ -10,6 +10,7 @@
 #include "ClosedCube_HDC1080.h" // Libreria sensor HDC1080
 #include <Adafruit_Sensor.h>  // Libreria para lectura de sensores
 #include <Adafruit_BMP280.h>  // Libreria sensor BMP280
+#include "GravityTDS.h"   // Libreria para el sensor TDS 
 #include <Adafruit_SSD1306.h> // Libreria para el controlador de pantalla OLEDz
 #include <Adafruit_GFX.h>    // Libreria de gráficos básica
 
@@ -30,11 +31,17 @@ float presion, P0, altitud;		// Variables para almacenar valor de presion atmosf
 float lux;  // Variable para almacenar valor de la luz
 float temperaturaHDC, humedad;  // Variable para almacenar valor de temperatura y humedad con sensor HDC
 
-// Variables para sensor de pH
-// const int analogInPin = 27; 
-// int buf[10];
-// int temp=0;
-// unsigned long int inValue; 
+// ****** Variables para sensor TDS
+#define TdsSensorPin 39
+GravityTDS gravityTds;
+float temperature = 25,tdsValue = 0;
+
+// ***** Variables para sensor de pH y Temperatura 
+const int analogInPinPH = 35;
+const int analogInPinTempInt = 34;  
+int buf[10];
+int temp=0;
+unsigned long int inValue; 
 
 const uint8_t ledPin = 2; // Led de la tarjeta esp32
 const uint16_t dataTxTimeInterval = 500; // Variable para la funcion millis()
@@ -154,8 +161,7 @@ void setup() {
   Serial.begin(115200);				// Inicializa comunicacion serie a 115200 bps
   Serial.println("Iniciando:");			// Texto de inicio
 
-  
-  
+
   if ( !bmp.begin() ) {				// Inicia comunicacion del sensor BMP280 y si falla la comunicacion con el sensor mostrar
     Serial.println("BMP280 no encontrado !");	// texto y detener flujo del programa
     while (1);					// mediante bucle infinito
@@ -169,6 +175,11 @@ void setup() {
   	}
   
   hdc1080.begin(0x40); // Inicia comunicacion con sensor HDC1080
+
+  gravityTds.setPin(TdsSensorPin);
+  gravityTds.setAref(5.0);          //Voltaje de referencia en el ADC, por defecto 5.0V 
+  gravityTds.setAdcRange(1024);     //1024 para 10bit ADC;4096 para 12bit ADC
+  gravityTds.begin();               //inicializamos sensor TDS
 
   WiFi.begin(ssid, password); // Inicia la comunicacion Wifi
 
@@ -261,39 +272,47 @@ void loop() {
 	
 		altitud = bmp.readAltitude(P0);		// Muestra valor de altitud con referencia a P0
 
+    gravityTds.setTemperature(temperature);     // Establece la temperatura y ejecuta la compensación de temperatura.
+    gravityTds.update();                        // Muestrea y calcula.
+    tdsValue = gravityTds.getTdsValue();        // Luego, obtén el valor.
+
     // ****************** SENSOR DE pH y Temperatura
   //   /*para evitar demasiadas variaciones lecturaremos 
-  //  unos varios valores y luego sacaremos el promedio*/
-  //  for(int i=0; i<10;i++){
-  //   /*realizamos 10 lecturasy almacenamos en buff*/
-  //     buf[i]= analogRead(analogInPin);
-  //     delay(10);
-  //  }
+  // unos varios valores y luego sacaremos el promedio*/
+    for(int i=0; i<10;i++){
+      /*realizamos 10 lecturasy almacenamos en buff*/
+        buf[i]= analogRead(analogInPinPH);
+        delay(10);
+    }
   //  /*luego realizamos un barrido de los valores lecturados
   //   * y descartamos los valores demasiado elevados y los 
-  //   * valoresdemasiado vajos*/
-  //   for(int i=0; i<9; i++){
-  //     for(int j=i+1;j<10;j++){
-  //       temp= buf[i];
-  //       buf[i]=buf[j];
-  //       buf[j]=temp;
-  //     }  
-  //   }
+  //   * valoresdemasiado bajos*/
+    for(int i=0; i<9; i++){
+      for(int j=i+1;j<10;j++){
+        temp= buf[i];
+        buf[i]=buf[j];
+        buf[j]=temp;
+      }  
+    }
   //   /*realicamos el calculo del promedio y la conversion
   //   a voltaje en mv*/
-  //   inValue=0;
-  //   for(int i=2; i<8; i++){
-  //       inValue= inValue + buf[i];
-  //   }
-  //   float PHVol= (float)inValue*100*5/1024/6;
+    inValue=0;
+    for(int i=2; i<8; i++){
+        inValue= inValue + buf[i];
+    }
+    float PHVol= (float)inValue*5/1024/6;
 
-  //   float PH= -0.0554*PHVol +22.236;
+    float lectTemp =  analogRead(analogInPinTempInt);    
+    float miliV_tem = 5.0 /1024 * lectTemp ;
+    float temperaturaInt = miliV_tem; 
+
+    float PH= -0.57*PHVol +21.338;
 
     mostrarLectura(lux,temperaturaHDC,humedad,presion,altitud); // Muestra los datos de los sensores en la pantalla OLED
 
     // Se recolectan los datos en un String para ser enviados
-		String	data = "{\"Luz\": "+ String(lux) +", \"Temperatura\": "+ String(temperaturaHDC)+", \"Humedad\": "+ String(humedad) +", \"Presion\": "+ String(presion) +", \"Altitud\": "+ String(altitud) +"}";
-		//String	data = "{\"Luz\": "+ String(lux) +", \"Temperatura\": "+ String(temperaturaHDC)+", \"Humedad\": "+ String(humedad) +", \"Presion\": "+ String(presion) +", \"Altitud\": "+ String(altitud) +", \"pH\": "+ String(PH) +"}";
+		//String	data = "{\"Luz\": "+ String(lux) +", \"Temperatura\": "+ String(temperaturaHDC)+", \"Humedad\": "+ String(humedad) +", \"Presion\": "+ String(presion) +", \"Altitud\": "+ String(altitud) +"}";
+		String	data = "{\"Luz\": "+ String(lux) +", \"Temperatura\": "+ String(temperaturaHDC)+", \"Humedad\": "+ String(humedad) +", \"Presion\": "+ String(presion) +", \"Altitud\": "+ String(altitud) +", \"pH\": "+ String(PH) +",\"TempInt\": "+ String(temperaturaInt) +", \"tds\": "+ String(tdsValue)+"}";
     //String	data = "{\"Luz\": "+ String(lux) +", \"Temperatura\": "+ String(temperatura)+", \"Humedad\": "+ String(humedad) +"}";
 
 		websockets.broadcastTXT(data); // Se envian los datos por protocolo websocket

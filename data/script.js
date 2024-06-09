@@ -8,9 +8,9 @@ socketConnection.onmessage = function (event) {
 	updateCardPercentage("Humedad", data.Humedad, "%");
 	updateCardPercentage("Presion", data.Presion, "hPa");
 	updateCardPercentage("Altitud", data.Altitud, "m");
-	//updateCardPercentage("pH", data.pH, "pH");
-	//updateCardPercentage("Temperatura_Interna", data.Temperatura_Interna, "C");
-	//updateCardPercentage("Oxigeno", data.Oxigeno, "m");
+	updateCardPercentage("pH", data.pH, "pH");
+	updateCardPercentage("TempInt", data.TempInt, "C");
+	updateCardPercentage("tds", data.tds, "ppm");
 
 	var time = new Date().toLocaleTimeString();
   	var value = data.Luz; // Puedes ajustar esto según el valor que quieras graficar
@@ -18,7 +18,10 @@ socketConnection.onmessage = function (event) {
 	var value3 = data.Humedad;
 	var value4 = data.Presion;
 	var value5 = data.Altitud;
-  	addData(time, value,value2,value3,value4,value5);
+	var value6 = data.pH;
+	var value7 = data.TempInt;
+	var value8 = data.tds;
+  	addData(time, value,value2,value3,value4,value5,value6,value7,value8);
 };
 
 function updateCardPercentage(cardId, value, unit) {
@@ -44,7 +47,7 @@ function updateCardPercentage(cardId, value, unit) {
 		circle.style.stroke = '#ff04f7';
 	  }
 	} else if (cardId == "Temperatura") {
-	  const offset = circumference - (value / 60) * circumference;
+	  const offset = circumference - (value / 10) * circumference;
 	  circle.style.strokeDashoffset = offset;
 	  circle.style.stroke = '#00a1ff';
 	} else if (cardId == "Humedad") {
@@ -59,7 +62,21 @@ function updateCardPercentage(cardId, value, unit) {
 		const offset = circumference - (value / 5) * circumference;
 		circle.style.strokeDashoffset = offset;
 		circle.style.stroke = '#ec4e0d';
+	} else if (cardId == "pH") {
+		const offset = circumference - (value / 7) * circumference;
+		circle.style.strokeDashoffset = offset;
+		circle.style.stroke = '#ec4e0d';
+	} else if (cardId == "TempInt") {
+		const offset = circumference - (value / 14) * circumference;
+		circle.style.strokeDashoffset = offset;
+		circle.style.stroke = '#ec4e0d';
+ 	} else if (cardId == "tds") {
+		const offset = circumference - (value / 120) * circumference;
+		circle.style.strokeDashoffset = offset;
+		circle.style.stroke = '#ec4e0d';
 	}
+
+	
 
 	card.setAttribute('data-value', value);
 }
@@ -330,7 +347,7 @@ var myChart8 = new Chart(ctx8, {
 	data: {
 	  labels: [],
 	  datasets: [{
-		label: 'Sensor Datos Oxigeno',
+		label: 'Sensor Datos TDS',
 		data: [],
 		borderColor: 'rgba(75, 192, 192, 1)',
 		borderWidth: 2,
@@ -359,12 +376,12 @@ var myChart8 = new Chart(ctx8, {
 	}
 });
 
-function addData(time, value,value2,value3,value4,value5) {
-    myChart.data.labels.push(time);
-    myChart.data.datasets[0].data.push(value);
-	if (myChart.data.labels.length > 50) {
-        myChart.data.labels.shift();
-        myChart.data.datasets[0].data.shift();
+function addData(time, value,value2,value3,value4,value5,value6,value7,value8) {
+    myChart1.data.labels.push(time);
+    myChart1.data.datasets[0].data.push(value);
+	if (myChart1.data.labels.length > 50) {
+        myChart1.data.labels.shift();
+        myChart1.data.datasets[0].data.shift();
     }
 
 	myChart2.data.labels.push(time);
@@ -395,11 +412,35 @@ function addData(time, value,value2,value3,value4,value5) {
         myChart5.data.datasets[0].data.shift();
     }
 
-    myChart.update();
+	myChart6.data.labels.push(time);
+    myChart6.data.datasets[0].data.push(value6);
+	if (myChart6.data.labels.length > 50) {
+        myChart6.data.labels.shift();
+        myChart6.data.datasets[0].data.shift();
+    }
+
+	myChart7.data.labels.push(time);
+    myChart7.data.datasets[0].data.push(value7);
+	if (myChart7.data.labels.length > 50) {
+        myChart7.data.labels.shift();
+        myChart7.data.datasets[0].data.shift();
+    }
+
+	myChart8.data.labels.push(time);
+    myChart8.data.datasets[0].data.push(value8);
+	if (myChart8.data.labels.length > 50) {
+        myChart8.data.labels.shift();
+        myChart8.data.datasets[0].data.shift();
+    }
+
+    myChart1.update();
 	myChart2.update();
 	myChart3.update();
 	myChart4.update();
 	myChart5.update();
+	myChart6.update();
+	myChart7.update();
+	myChart8.update();
 	
 }
 

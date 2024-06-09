@@ -312,7 +312,7 @@
 	pointer-events: none;
 	z-index: 1;
   }
-  #descargarCSVpH {
+  #downloadButton6 {
 	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
 	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
 	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
@@ -321,7 +321,7 @@
 	left: 13%;
   }
 
-  #descargarCSVTemperaturaInterna {
+  #downloadButton7 {
 	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
 	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
 	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
@@ -330,7 +330,7 @@
 	left: 45%;
   }
 
-  #descargarCSVOxigeno {
+  #downloadButton8 {
 	font-size: 15px; /* Ajusta este valor según el tamaño de fuente deseado */
 	padding: 10px 10px; /* Ajusta estos valores según el relleno deseado (top/bottom y left/right) */
 	margin-top: 10px; /* Ajusta este valor para mover el botón hacia abajo */
