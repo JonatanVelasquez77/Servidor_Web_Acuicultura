@@ -1,28 +1,34 @@
 let socketConnection = new WebSocket('ws://' + window.location.hostname + ':81/');
 
 socketConnection.onmessage = function (event) {
-	var data = JSON.parse(event.data);
+    var data = JSON.parse(event.data);
 
-	updateCardPercentage("Luz", data.Luz, "lx");
-	updateCardPercentage("Temperatura", data.Temperatura, "C");
-	updateCardPercentage("Humedad", data.Humedad, "%");
-	updateCardPercentage("Presion", data.Presion, "hPa");
-	updateCardPercentage("Altitud", data.Altitud, "m");
-	updateCardPercentage("pH", data.pH, "pH");
-	updateCardPercentage("TempInt", data.TempInt, "C");
-	updateCardPercentage("tds", data.tds, "ppm");
+    updateCardPercentage("Luz", data.Luz, "lx");
+    updateCardPercentage("Temperatura", data.Temperatura, "C");
+    updateCardPercentage("Humedad", data.Humedad, "%");
+    updateCardPercentage("Presion", data.Presion, "hPa");
+    updateCardPercentage("Altitud", data.Altitud, "m");
+    updateCardPercentage("pH", data.pH, "pH");
+    updateCardPercentage("TempInt", data.TempInt, "C");
+    updateCardPercentage("tds", data.tds, "ppm");
 
-	var time = new Date().toLocaleTimeString();
-  	var value = data.Luz; // Puedes ajustar esto según el valor que quieras graficar
-	var value2 = data.Temperatura;
-	var value3 = data.Humedad;
-	var value4 = data.Presion;
-	var value5 = data.Altitud;
-	var value6 = data.pH;
-	var value7 = data.TempInt;
-	var value8 = data.tds;
-  	addData(time, value,value2,value3,value4,value5,value6,value7,value8);
+    // Actualizar campos de texto de los relés
+    document.getElementById('timeRele1').value = data.rele1Time + " segundos";
+    document.getElementById('timeRele2').value = data.rele2Time + " segundos";
+    document.getElementById('timeRele3').value = data.rele3Time + " segundos";
+    document.getElementById('timeRele4').value = data.rele4Time + " segundos";
+
+    var time = new Date().toLocaleTimeString();
+    addData(time, data.Luz, data.Temperatura, data.Humedad, data.Presion, data.Altitud, data.pH, data.TempInt, data.tds);
 };
+
+function turnOn(rele) {
+    socketConnection.send(`rele${rele}on`);
+}
+
+function turnOff(rele) {
+    socketConnection.send(`rele${rele}off`);
+}
 
 function updateCardPercentage(cardId, value, unit) {
 	const card = document.getElementById(cardId);
@@ -39,15 +45,15 @@ function updateCardPercentage(cardId, value, unit) {
 	  const offset = circumference - (value / 2000) * circumference;
 	  circle.style.strokeDashoffset = offset;
 
-	  if (value >= 80) {
+	  if (value >= 0 && value <= 100) {
 		circle.style.stroke = '#00ff43';
-	  } else if (value >= 40) {
+	  } else if (value > 100 && value <= 1000) {
 		circle.style.stroke = '#41c2c3';
 	  } else {
 		circle.style.stroke = '#ff04f7';
 	  }
 	} else if (cardId == "Temperatura") {
-	  const offset = circumference - (value / 10) * circumference;
+	  const offset = circumference - (value / 50) * circumference;
 	  circle.style.strokeDashoffset = offset;
 	  circle.style.stroke = '#00a1ff';
 	} else if (cardId == "Humedad") {
@@ -63,15 +69,15 @@ function updateCardPercentage(cardId, value, unit) {
 		circle.style.strokeDashoffset = offset;
 		circle.style.stroke = '#ec4e0d';
 	} else if (cardId == "pH") {
-		const offset = circumference - (value / 7) * circumference;
-		circle.style.strokeDashoffset = offset;
-		circle.style.stroke = '#ec4e0d';
-	} else if (cardId == "TempInt") {
 		const offset = circumference - (value / 14) * circumference;
 		circle.style.strokeDashoffset = offset;
 		circle.style.stroke = '#ec4e0d';
+	} else if (cardId == "TempInt") {
+		const offset = circumference - (value / 50) * circumference;
+		circle.style.strokeDashoffset = offset;
+		circle.style.stroke = '#ec4e0d';
  	} else if (cardId == "tds") {
-		const offset = circumference - (value / 120) * circumference;
+		const offset = circumference - (value / 1000) * circumference;
 		circle.style.strokeDashoffset = offset;
 		circle.style.stroke = '#ec4e0d';
 	}
@@ -84,9 +90,6 @@ function updateCardPercentage(cardId, value, unit) {
 function getRandomPercentage() {
 	return Math.floor(Math.random() * 101);
 }
-
-const turnOn = () => socketConnection.send("LedOn");
-const turnOff = () => socketConnection.send("LedOff");
 
 var ctx1 = document.getElementById('myChart1').getContext('2d');
 

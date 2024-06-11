@@ -11,171 +11,184 @@
 </head>
 
 <body>
-	<div class="top-section">
-		<h1>SISTEMA ACUICOLA</h1>
-		<hr>
-		<h3>ACTIVACION DIGITAL</h3>
-		
-		<button onclick="turnOn()">&nbsp;Rele 1 - On&nbsp;</button>
-		<button onclick="turnOff()">&nbsp;Rele 1 - Off&nbsp;</button>
-		<button onclick="turnOn()">&nbsp;Rele 2 - On&nbsp;</button>
-		<button onclick="turnOff()">&nbsp;Rele 2 - Off&nbsp;</button>
-		<button onclick="turnOn()">&nbsp;Rele 3 - On&nbsp;</button>
-		<button onclick="turnOff()">&nbsp;Rele 3 - Off&nbsp;</button>
-		<button onclick="turnOn()">&nbsp;Rele 4 - On&nbsp;</button>
-		<button onclick="turnOff()">&nbsp;Rele 4 - Off&nbsp;</button>
-		
-		
-		<!-- <button id="downloadButton">Descargar CSV</button> -->
-		
-	</div>
+    <div class="top-section">
+        <h1>SISTEMA ACUICOLA</h1>
+        <hr>
+        <h3>ACTIVACION DIGITAL</h3>
+
+        <div class="button-container">
+            <div class="button-group">
+                <button onclick="turnOn(1)">Rele 1 - On</button>
+                <button onclick="turnOff(1)">Rele 1 - Off</button>
+                <input type="text" id="timeRele1" placeholder="Tiempo Rele 1" readonly>
+            </div>
+            <div class="button-group">
+                <button onclick="turnOn(2)">Rele 2 - On</button>
+                <button onclick="turnOff(2)">Rele 2 - Off</button>
+                <input type="text" id="timeRele2" placeholder="Tiempo Rele 2" readonly>
+            </div>
+            <div class="button-group">
+                <button onclick="turnOn(3)">Rele 3 - On</button>
+                <button onclick="turnOff(3)">Rele 3 - Off</button>
+                <input type="text" id="timeRele3" placeholder="Tiempo Rele 3" readonly>
+            </div>
+            <div class="button-group">
+                <button onclick="turnOn(4)">Rele 4 - On</button>
+                <button onclick="turnOff(4)">Rele 4 - Off</button>
+                <input type="text" id="timeRele4" placeholder="Tiempo Rele 4" readonly>
+            </div>
+        </div>
+    </div>
+    
+    <div id="margin_p1">
+        <p id="parrafo1">Sensores Externos</p>
+    </div>
+
+    <div class="container">
+        <canvas id="myChart1" width="400" height="200"></canvas>
+        <button id="downloadButton1">Descargar CSV Luz</button>
+        <div class="card" id="Luz" data-value="94">
+            <div class="box">
+                <div class="percent">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>90 <span>lx</span> </h2>
+                    </div>
+                </div>
+                <h2 class="text">Luz</h2>
+            </div>
+        </div>
+
+        <canvas id="myChart2" width="400" height="200"></canvas>
+        <button id="downloadButton2">Descargar CSV Temperatura</button>
+        <div class="card" id="Temperatura" data-value="15">
+            <div class="box">
+                <div class="percent">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>15<span> *C</span></h2>
+                    </div>
+                </div>
+                <h2 class="text">Temperatura</h2>
+            </div>
+        </div>
+
+        <canvas id="myChart3" width="400" height="200"></canvas>
+        <button id="downloadButton3">Descargar CSV Humedad</button>
+        <div class="card" id="Humedad" data-value="50">
+            <div class="box">
+                <div class="percent">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>50<span>%</span> </h2>
+                    </div>
+                </div>
+                <h2 class="text">Humedad</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container2">
+        <canvas id="myChart4" width="400" height="200"></canvas>
+        <button id="downloadButton4">Descargar CSV Presion</button>
+        <div class="card" id="Presion" data-value="500">
+            <div class="box">
+                <div class="percent">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>500<span>hPa</span> </h2>
+                    </div>
+                </div>
+                <h2 class="text">Presion</h2>
+            </div>
+        </div>
+
+        <canvas id="myChart5" width="400" height="200"></canvas>
+        <button id="downloadButton5">Descargar CSV Altitud</button>
+        <div class="card" id="Altitud" data-value="2">
+            <div class="box">
+                <div class="percent">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>2 <span>m</span> </h2>
+                    </div>
+                </div>
+                <h2 class="text">Altitud</h2>
+            </div>
+        </div>
+    </div>
 	
-	<div id="margin_p1">
-		<p id="parrafo1">Sensores Externos</p>
-	</div>
-	<div class="container">
-			
-		<canvas id="myChart1" width="400" height="200"></canvas>
-		<button id="downloadButton1">Descargar CSV Luz</button>
-		<div class="card" id="Luz" data-value="94">
-			<div class="box">
-				<div class="percent">
-					<svg>
-						<circle cx="70" cy="70" r="70"></circle>
-						<circle cx="70" cy="70" r="70"></circle>
-					</svg>
-					<div class="number">
-						<h2>90 <span>lx</span> </h2>
-					</div>
-				</div>
-				<h2 class="text">Luz</h2>
-			</div>	
-		</div>
-		<canvas id="myChart2" width="400" height="200"></canvas>
-		<button id="downloadButton2">Descargar CSV Temperatura</button>
-		<div class="card" id="Temperatura" data-value="15">
-			<div class="box">
-				<div class="percent">
-					<svg>
-						<circle cx="70" cy="70" r="70"></circle>
-						<circle cx="70" cy="70" r="70"></circle>
-					</svg>
-					<div class="number">
-						<h2>15<span> *C</span></h2>
-					</div>
-				</div>
-				<h2 class="text">Temperatura</h2>
-			</div>
-		</div>
-		<canvas id="myChart3" width="400" height="200"></canvas>
-		<button id="downloadButton3">Descargar CSV Humedad</button>
-		<div class="card" id="Humedad" data-value="50">
-			<div class="box">
-				<div class="percent">
-					<svg>
-						<circle cx="70" cy="70" r="70"></circle>
-						<circle cx="70" cy="70" r="70"></circle>
-					</svg>
-					<div class="number">
-						<h2>50<span>%</span> </h2>
-					</div>
-				</div>
-				<h2 class="text">Humedad</h2>
-			</div>
-		</div>
-	</div>
-	<div class="container2">
-		
-		<canvas id="myChart4" width="400" height="200"></canvas>
-		<button id="downloadButton4">Descargar CSV Presion</button>
-		<div class="card" id="Presion" data-value="500">
-			<div class="box">
-				<div class="percent">
-					<svg>
-						<circle cx="70" cy="70" r="70"></circle>
-						<circle cx="70" cy="70" r="70"></circle>
-					</svg>
-					<div class="number">
-						<h2>500<span>hPa</span> </h2>
-					</div>
-				</div>
-			    <h2 class="text">Presion</h2>
-			</div>
-	    </div>
-		<canvas id="myChart5" width="400" height="200"></canvas>
-		<button id="downloadButton5">Descargar CSV Altitud</button>
-		<div class="card" id="Altitud" data-value="2">
-			<div class="box">
-				<div class="percent">
-					<svg>
-						<circle cx="70" cy="70" r="70"></circle>
-						<circle cx="70" cy="70" r="70"></circle>
-					</svg>
-					<div class="number">
-						<h2>2 <span>m</span> </h2>
-					</div>
-				</div>
-				<h2 class="text">Altitud</h2>
-			</div>
-	    </div>
-	</div>
+	<div id="margin_p2">
+        <p id="parrafo2">Sensores Internos</p>
+    </div>
+	
+    <div class="container3">
+        <canvas id="myChart6" width="400" height="200"></canvas>
+        <button id="downloadButton6">Descargar CSV pH</button>
+        <div class="card" id="pH" data-value="7">
+            <div class="box">
+                <div class="percent">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>7 <span>pH</span> </h2>
+                    </div>
+                </div>
+                <h2 class="text">pH</h2>
+            </div>
+        </div>
 
-	<!-- <div id="margin_p2">
-		<p id="parrafo2">Sensores Internos</p>
-	</div> -->
+        <canvas id="myChart7" width="400" height="200"></canvas>
+        <button id="downloadButton7">Descargar CSV Temperatura Interna</button>
+        <div class="card" id="TempInt" data-value="10">
+            <div class="box">
+                <div class="percent">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>15<span> *C</span></h2>
+                    </div>
+                </div>
+                <h2 class="text">Temperatura Int</h2>
+            </div>
+        </div>
 
-	<div class="container3">
-			
-		<canvas id="myChart6" width="400" height="200"></canvas>
-		<button id="downloadButton6">Descargar CSV pH</button>
-		<div class="card" id="pH" data-value="7">
-			<div class="box">
-				<div class="percent">
-					<svg>
-						<circle cx="70" cy="70" r="70"></circle>
-						<circle cx="70" cy="70" r="70"></circle>
-					</svg>
-					<div class="number">
-						<h2>7 <span>pH</span> </h2>
-					</div>
-				</div>
-				<h2 class="text">pH</h2>
-			</div>	
-		</div>
-		<canvas id="myChart7" width="400" height="200"></canvas>
-		<button id="downloadButton7">Descargar CSV Temperatura Interna</button>
-		<div class="card" id="TempInt" data-value="10">
-			<div class="box">
-				<div class="percent">
-					<svg>
-						<circle cx="70" cy="70" r="70"></circle>
-						<circle cx="70" cy="70" r="70"></circle>
-					</svg>
-					<div class="number">
-						<h2>15<span> *C</span></h2>
-					</div>
-				</div>
-				<h2 class="text">Temperatura Int</h2>
-			</div>
-		</div>
-		<canvas id="myChart8" width="400" height="200"></canvas>
-		<button id="downloadButton8">Descargar CSV TDS</button>
-		<div class="card" id="tds" data-value="100">
-			<div class="box">
-				<div class="percent">
-					<svg>
-						<circle cx="70" cy="70" r="70"></circle>
-						<circle cx="70" cy="70" r="70"></circle>
-					</svg>
-					<div class="number">
-						<h2>50<span>%</span> </h2>
-					</div>
-				</div>
-				<h2 class="text">TDS</h2>
-			</div>
-		</div>
-	</div>
-
+        <canvas id="myChart8" width="400" height="200"></canvas>
+        <button id="downloadButton8">Descargar CSV TDS</button>
+        <div class="card" id="tds" data-value="100">
+            <div class="box">
+                <div class="percent">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>300<span>ppm</span> </h2>
+                    </div>
+                </div>
+                <h2 class="text">TDS</h2>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
