@@ -61,6 +61,8 @@ Al abrir el proyecto se debe configurar el archivo de configuracion "platformio.
 	zeed/ESP Async WebServer@^1.2.3
 	links2004/WebSockets@^2.4.1
 	adafruit/Adafruit SSD1306@^2.5.9
+	paulstoffregen/OneWire@^2.3.8
+	milesburton/DallasTemperature@^3.11.0
 ```
 
 - Realizar la carga de archivos "HTML, CSS y JavaScript" a la memoria de la esp32 por medio del sistema de archivos SPIFFS:
